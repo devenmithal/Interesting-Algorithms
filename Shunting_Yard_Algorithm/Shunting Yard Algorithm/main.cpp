@@ -8,11 +8,32 @@
 
 #include <iostream>
 #include <stack>
+#include <string>
 using namespace std;
 
+void accumulate_number(float& current, char additional){
+    current *= 10;
+    current += (additional - '0');
+}
+
 float shunting_yard(string expression){
-    stack<string> expression_stack;
+    stack<char> expression_stack;
+    string digits[] = {"0" , "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    float current = 0;
     
+    for(int i = 0; i < expression.length(); ++i ){
+        if(expression[i] - 48 >= 0 && expression[i] - 48 <= 9){
+            while(expression[i] - 48 >= 0 && expression[i] - 48 <= 9){
+                accumulate_number(current, expression[i++]);
+            }
+        } else if(expression[i] == '*' ||
+                  expression[i] == '/' ||
+                  expression[i] == '-' ||
+                  expression[i] == '+' ||
+                  expression[i] == '('){
+            expression_stack.push(expression[i]);
+        }
+    }
     
     
     
