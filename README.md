@@ -1,2 +1,2 @@
-#Interesting Algorithms\
-The name says it all. }
+#Interesting Algorithms
+The name says it all.
