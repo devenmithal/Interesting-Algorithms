@@ -5,6 +5,9 @@
 //  Created by Deven Mithal on 7/1/19.
 //  Copyright © 2019 Deven Mithal. All rights reserved.
 //
+// Shunting-yard algorithm implementation for addition, subtraction, division and multiplication.
+// Exponentiation will be added later, so for the moment all operators under consideration
+// are left-associative.
 
 #include <iostream>
 #include <stack>
