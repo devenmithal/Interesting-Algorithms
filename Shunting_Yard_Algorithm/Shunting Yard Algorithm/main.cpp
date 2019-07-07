@@ -44,7 +44,8 @@ float shunting_yard(string expression){
 }
 
 void shunting_yard_wrapper(){
-    string expressions[5] = { "5-4-3+2*7/7",
+    string expressions[5] = {
+        "5-4-3+2*7/7",
         "5-(4*2)+3*2/6+(3-2)",
         "2*(9/3*3+1)/2/2",
         "(17/(15+2)-3)/2*2",
