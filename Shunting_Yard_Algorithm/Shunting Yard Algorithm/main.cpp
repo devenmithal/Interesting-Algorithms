@@ -9,11 +9,11 @@
 // division and multiplication.
 // Exponentiation will be added later, so for the moment all operators under consideration
 // are left-associative.
-// experimental edit
 
 #include <iostream>
 #include <stack>
 #include <string>
+#include <queue>
 
 int rank(char op){
     if(op == '*' || op == '/'){
@@ -37,24 +37,21 @@ void accumulate_number(float& current, char additional){
 
 float shunting_yard(std::string expression){
     std::stack<char> expression_stack;
-    std::string digits[] = {"0" , "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-    float current = 0;
+    std::queue<char> output_queue;
+    const std::string digits[] = {"0" , "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    //float current = 0;
     
     for(int i = 0; i < expression.length(); ++i ){
         if(expression[i] - 48 >= 0 && expression[i] - 48 <= 9){
             while(expression[i] - 48 >= 0 && expression[i] - 48 <= 9){
-                accumulate_number(current, expression[i++]);
+                output_queue.push(expression[i]);
             }
-        } else if(expression[i] == '*' ||
-                  expression[i] == '/' ||
-                  expression[i] == '-' ||
-                  expression[i] == '+' ||
-                  expression[i] == '('){
+        } else if( (!expression_stack.empty()) && (precedence(expression[i], expression_stack.top()) > 0) ){
             expression_stack.push(expression[i]);
         }
     }
     
-    
+    // completing all the cases
     
     return 1;
 }
@@ -82,5 +79,15 @@ void shunting_yard_wrapper(){
 
 int main(int argc, const char * argv[]) {
     shunting_yard_wrapper();
+    std::cout << "Success" << std::endl;
 }
 
+/*
+else if(expression[i] == '*' ||
+        expression[i] == '/' ||
+        expression[i] == '-' ||
+        expression[i] == '+' ||
+        expression[i] == '('){
+    expression_stack.push(expression[i]);
+    }
+ */
