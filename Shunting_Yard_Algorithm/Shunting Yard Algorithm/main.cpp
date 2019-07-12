@@ -42,12 +42,22 @@ float shunting_yard(std::string expression){
     //float current = 0;
     
     for(int i = 0; i < expression.length(); ++i ){
+        
         if(expression[i] - 48 >= 0 && expression[i] - 48 <= 9){
+            
             while(expression[i] - 48 >= 0 && expression[i] - 48 <= 9){
                 output_queue.push(expression[i]);
             }
+            
         } else if( (!expression_stack.empty()) && (precedence(expression[i], expression_stack.top()) > 0) ){
+            
             expression_stack.push(expression[i]);
+            
+        } else if ( (!expression_stack.empty()) && (precedence(expression[i], expression_stack.top()) <= 0) ){
+            
+            output_queue.push(expression_stack.top());
+            expression_stack.pop();
+            expression_stack.push(expression[1]);
         }
     }
     
