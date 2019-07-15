@@ -71,6 +71,11 @@ float shunting_yard(std::string expression){
         }
     }
     
+    while(!expression_stack.empty()){
+        output_queue.push(expression_stack.top());
+        expression_stack.pop();
+    }
+    
     // completing all the cases
     
     return 1;
