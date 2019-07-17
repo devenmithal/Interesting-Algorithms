@@ -35,7 +35,17 @@ void accumulate_number(float& current, char additional){
     current += (additional - '0');
 }
 
-float shunting_yard(std::string expression){
+std::string queue_to_string(std::queue<char>& output_queue){
+    std::string output_string = "";
+    while(!output_queue.empty()){
+        output_string += output_queue.front();
+        output_queue.pop();
+    }
+    
+    return output_string;
+}
+
+std::string infix_to_postfix(std::string expression){
     std::stack<char> expression_stack;
     std::queue<char> output_queue;
     const std::string digits[] = {"0" , "1", "2", "3", "4", "5", "6", "7", "8", "9"};
@@ -78,7 +88,12 @@ float shunting_yard(std::string expression){
     
     // completing all the cases
     
-    return 1;
+    return "result";
+}
+
+float postfix_eval(std::string expression){
+    // evaluate expression in postfix/rpn
+    return 0;
 }
 
 void shunting_yard_wrapper(){
@@ -97,8 +112,10 @@ void shunting_yard_wrapper(){
     results[3] = ( 17 / ( 15 + 2 ) - 3 ) / 2 * 2;
     results[4] = 2 - 3 - 4 + (69 / 13) + ((6 - 2) - 3) * (6 - (2 - 3)) * (6 - 2 - 3);
     
-    for(std::string expression : expressions){
-        shunting_yard(expression);
+    for(int i = 0; i < 5; ++i){
+        std::string postfix = infix_to_postfix(expressions[i]);
+        float value = postfix_eval(postfix);
+        std::cout << "Value for expression " << i << " is " << (value == results[i]) << std::endl;
     }
 }
 
