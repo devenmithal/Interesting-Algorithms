@@ -52,7 +52,6 @@ std::string infix_to_postfix(std::string expression){
     //float current = 0;
     
     for(int i = 0; i < expression.length(); ){
-        
         if(expression[i] == '('){
             output_queue.push(expression[i]);
             ++i; // std::cout << i << std::endl;
@@ -64,6 +63,8 @@ std::string infix_to_postfix(std::string expression){
                 ++i; // std::cout << i << std::endl;
             }
             
+            ++i;
+            
         } else if(expression[i] - 48 >= 0 && expression[i] - 48 <= 9){
             
             while(expression[i] - 48 >= 0 && expression[i] - 48 <= 9){
@@ -72,7 +73,7 @@ std::string infix_to_postfix(std::string expression){
             }
             
         } else if( ((!expression_stack.empty()) && (precedence(expression[i], expression_stack.top()) > 0)) || (expression_stack.empty()) ){
-            
+            //std::cout << expression[i] << std::endl;
             expression_stack.push(expression[i]);
             ++i; // std::cout << i << std::endl;
             
@@ -80,8 +81,9 @@ std::string infix_to_postfix(std::string expression){
             
             output_queue.push(expression_stack.top());
             expression_stack.pop();
-            expression_stack.push(expression[1]);
-            ++i; // std::cout << i << std::endl;
+            expression_stack.push(expression[i]);
+            ++i;
+            //std::cout << i << std::endl;
             
         } else {
             std::cerr << "Invalid operator" << std::endl;
@@ -121,7 +123,7 @@ void shunting_yard_wrapper(){
     
     // Here
     
-    for(int i = 0; i < 1; i++){
+    for(int i = 0; i < 5; i++){
         std::string postfix = infix_to_postfix(expressions[i]);
         
         std::cout << postfix << std::endl;
