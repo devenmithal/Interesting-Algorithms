@@ -140,8 +140,8 @@ float postfix_eval(std::string expression){
             
         } else {
             
-            float x = num_stack.top(); num_stack.pop();
             float y = num_stack.top(); num_stack.pop();
+            float x = num_stack.top(); num_stack.pop();
             num_stack.push(evaluate_binary_expression(x, expression[i], y));
             ++i;
             
