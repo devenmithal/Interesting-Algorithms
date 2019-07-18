@@ -53,16 +53,18 @@ std::string infix_to_postfix(std::string expression){
     
     for(int i = 0; i < expression.length(); ){
         if(expression[i] == '('){
-            output_queue.push(expression[i]);
+            expression_stack.push(expression[i]);
             ++i; // std::cout << i << std::endl;
             
         } else if(expression[i] == ')'){
+            
             while(expression_stack.top() != '('){
-                output_queue.push(expression[i]);
+                output_queue.push(expression_stack.top());
                 expression_stack.pop();
-                ++i; // std::cout << i << std::endl;
+                // std::cout << i << std::endl;
             }
             
+            expression_stack.pop();
             ++i;
             
         } else if(expression[i] - 48 >= 0 && expression[i] - 48 <= 9){
@@ -123,7 +125,8 @@ void shunting_yard_wrapper(){
     
     // Here
     
-    for(int i = 0; i < 5; i++){
+    //for(int i = 0; i < 5; i++){
+    for(int i = 1; i < 2; ++i){
         std::string postfix = infix_to_postfix(expressions[i]);
         
         std::cout << postfix << std::endl;
