@@ -20,6 +20,8 @@ int rank(char op){
         return 1;
     } else if (op == '-' || op == '+'){
         return 0;
+    } else if(op == '('){
+        return -1;
     } else {
         std::cerr << "Invalid Operator" << std::endl;
         return -1;
@@ -67,9 +69,9 @@ std::string infix_to_postfix(std::string expression){
             expression_stack.pop();
             ++i;
             
-        } else if(expression[i] - 48 >= 0 && expression[i] - 48 <= 9){
+        } else if(expression[i] - '0' >= 0 && expression[i] - '0' <= 9){
             
-            while(expression[i] - 48 >= 0 && expression[i] - 48 <= 9){
+            while(expression[i] - '0' >= 0 && expression[i] - '0' <= 9){
                 output_queue.push(expression[i]);
                 ++i; // std::cout << i << std::endl;
             }
@@ -81,8 +83,13 @@ std::string infix_to_postfix(std::string expression){
             
         } else if ( (!expression_stack.empty()) && (precedence(expression[i], expression_stack.top()) <= 0) ){
             
-            output_queue.push(expression_stack.top());
-            expression_stack.pop();
+            while( (!expression_stack.empty()) && (precedence(expression[i], expression_stack.top()) <= 0) ){
+                
+                output_queue.push(expression_stack.top());
+                expression_stack.pop();
+                
+            }
+            
             expression_stack.push(expression[i]);
             ++i;
             //std::cout << i << std::endl;
@@ -102,9 +109,46 @@ std::string infix_to_postfix(std::string expression){
     return output_string;
 }
 
+float evaluate_binary_expression(float x, char op, float y){
+    switch(op){
+        case '+': return x + y;
+            break;
+        case '-': return x - y;
+            break;
+        case '/': return x / y;
+            break;
+        case '*': return x * y;
+            break;
+        default: throw -1;
+            break;
+    }
+}
+
+
+// for now, only evaluates expressions with single digit numbers
 float postfix_eval(std::string expression){
-    // evaluate expression in postfix/rpn
-    return 0;
+    std::stack<float> num_stack;
+    
+    for(int i = 0; i < expression.length(); ){
+        
+        if(expression[i] - '0' >= 0 && expression[i] - '0' <= 9){
+            
+            while(expression[i] - '0' >= 0 && expression[i] - '0' <= 9){
+                num_stack.push(expression[i] - '0');
+                ++i; // std::cout << i << std::endl;
+            }
+            
+        } else {
+            
+            float x = num_stack.top(); num_stack.pop();
+            float y = num_stack.top(); num_stack.pop();
+            num_stack.push(evaluate_binary_expression(x, expression[i], y));
+            ++i;
+            
+        }
+    }
+    
+    return num_stack.top();
 }
 
 void shunting_yard_wrapper(){
@@ -133,6 +177,8 @@ void shunting_yard_wrapper(){
         
         float value = postfix_eval(postfix);
         std::cout << "Value for expression " << i << " is " << (value == results[i]) << std::endl;
+        std:: cout << value << " and actually " << results[i] << std::endl;
+        
     }
 }
 
