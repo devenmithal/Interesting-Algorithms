@@ -51,33 +51,40 @@ std::string infix_to_postfix(std::string expression){
     const std::string digits[] = {"0" , "1", "2", "3", "4", "5", "6", "7", "8", "9"};
     //float current = 0;
     
-    for(int i = 0; i < expression.length(); ++i ){
+    for(int i = 0; i < expression.length(); ){
+        
         if(expression[i] == '('){
             output_queue.push(expression[i]);
+            ++i; // std::cout << i << std::endl;
             
         } else if(expression[i] == ')'){
             while(expression_stack.top() != '('){
                 output_queue.push(expression[i]);
                 expression_stack.pop();
-                ++i;
+                ++i; // std::cout << i << std::endl;
             }
             
         } else if(expression[i] - 48 >= 0 && expression[i] - 48 <= 9){
             
             while(expression[i] - 48 >= 0 && expression[i] - 48 <= 9){
                 output_queue.push(expression[i]);
-                ++i;
+                ++i; // std::cout << i << std::endl;
             }
             
-        } else if( (!expression_stack.empty()) && (precedence(expression[i], expression_stack.top()) > 0) ){
+        } else if( ((!expression_stack.empty()) && (precedence(expression[i], expression_stack.top()) > 0)) || (expression_stack.empty()) ){
             
             expression_stack.push(expression[i]);
+            ++i; // std::cout << i << std::endl;
             
         } else if ( (!expression_stack.empty()) && (precedence(expression[i], expression_stack.top()) <= 0) ){
             
             output_queue.push(expression_stack.top());
             expression_stack.pop();
             expression_stack.push(expression[1]);
+            ++i; // std::cout << i << std::endl;
+            
+        } else {
+            std::cerr << "Invalid operator" << std::endl;
         }
     }
     
@@ -87,8 +94,8 @@ std::string infix_to_postfix(std::string expression){
     }
     
     // completing all the cases
-    
-    return "result";
+    std::string output_string = queue_to_string(output_queue);
+    return output_string;
 }
 
 float postfix_eval(std::string expression){
@@ -112,8 +119,13 @@ void shunting_yard_wrapper(){
     results[3] = ( 17 / ( 15 + 2 ) - 3 ) / 2 * 2;
     results[4] = 2 - 3 - 4 + (69 / 13) + ((6 - 2) - 3) * (6 - (2 - 3)) * (6 - 2 - 3);
     
-    for(int i = 0; i < 5; ++i){
+    // Here
+    
+    for(int i = 0; i < 1; i++){
         std::string postfix = infix_to_postfix(expressions[i]);
+        
+        std::cout << postfix << std::endl;
+        
         float value = postfix_eval(postfix);
         std::cout << "Value for expression " << i << " is " << (value == results[i]) << std::endl;
     }
